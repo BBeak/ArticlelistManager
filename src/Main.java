@@ -35,20 +35,23 @@ public class Main {
 				System.out.printf("%d번째 게시물이 작성되었습니다.\n", id);
 				list.add(new Articles(id, title, body));
 
-			} else if (command.equals("article list") && lastarticleId != 0) {
-				System.out.printf("현재 %d개의 게시물이 있습니다.\n", lastarticleId);
-				System.out.printf("		번호		|		제목		|		내용		|\n");
+			} else if (command.equals("article list")) {
+				if (list.size() == 0) {
+					System.out.println("현재 게시물이 없습니다.");
+				}
+				if (list.size() != 0) {
+					System.out.printf("현재 %d개의 게시물이 있습니다.\n", lastarticleId);
+					System.out.printf("		번호		|		제목		|		내용		|\n");
 
-				for (int i = 0; i < list.size(); i++) {
+					for (int i = 0; i < list.size(); i++) {
 
-					System.out.printf("		%d		|		%s		|		%s		|\n", list.get(i).getId(),
-							list.get(i).getTitle(), list.get(i).getbody());
+						System.out.printf("		%d		|		%s		|		%s		|\n", list.get(i).getId(),
+								list.get(i).getTitle(), list.get(i).getbody());
+					}
 				}
 
-			} else if (command.equals("article list") && lastarticleId == 0) {
-				System.out.printf("현재 게시물이 없습니다.\n");
 			} else if (command.equals("search")) {
-				System.out.printf("검색을 원하는 게시물의 id를 입력해주세요");
+				System.out.printf("검색을 원하는 게시물의 번호 를 입력해주세요");
 				int num = sc.nextInt();
 				System.out.printf("		%d		|		%s		|		%s		\n", list.get(num - 1).getId(),
 						list.get(num - 1).getTitle(), list.get(num - 1).getbody());
@@ -73,7 +76,7 @@ class Articles {
 	private String title;
 	private String body;
 
-	Articles(int id, String title, String body) {
+	public Articles(int id, String title, String body) {
 		this.id = id;
 		this.title = title;
 		this.body = body;
