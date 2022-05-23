@@ -9,9 +9,9 @@ import dto.Articles;
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("====	프로그램 시작	====");
-		
+
 		int lastarticleId = 0;
-		
+
 		List<Articles> list = new ArrayList<Articles>();
 
 		Scanner sc = new Scanner(System.in);
@@ -47,26 +47,27 @@ public class Main {
 				}
 				if (list.size() != 0) {
 					System.out.printf("현재 %d개의 게시물이 있습니다.\n", lastarticleId);
-					System.out.printf("		번호		|		제목		|		내용		|		등록시간		|		조회수				\n");
+					System.out.printf(
+							"		번호		|		제목		|		내용		|		등록시간		|		조회수				\n");
 
-					for (int i = list.size()-1; i >=0 ; i--) {
+					for (int i = list.size() - 1; i >= 0; i--) {
 						Articles article = list.get(i);
 
-						System.out.printf("		%d		|		%s		|		%s		|		%s		|		%d\n", article.id, article.title, article.body,article.regDate, article.viewed );
-								
+						System.out.printf("		%d		|		%s		|		%s		|		%s		|		%d\n",
+								article.id, article.title, article.body, article.regDate, article.viewed);
+
 					}
 				}
 
 			} else if (command.startsWith("article detail")) {
-				String[]commandBits = command.split(" ");
+				String[] commandBits = command.split(" ");
 				int getId = Integer.parseInt(commandBits[2]);
-				
+
 				Articles fdarticle = null;
-				
-				
+
 				for (int i = 0; i < list.size(); i++) {
 					fdarticle = list.get(i);
-					
+
 					if (fdarticle.id == getId) {
 						fdarticle.increseviewed();
 						System.out.printf(" 번호) : %d\n", fdarticle.id);
@@ -75,13 +76,49 @@ public class Main {
 						System.out.printf(" 등록시간) : %s\n", fdarticle.regDate);
 						System.out.printf(" 조회수) : %s\n", fdarticle.viewed);
 						break;
-						
-					}
-				}if (fdarticle.id != getId) {
-					System.out.printf("%d번 게시물은 존재하지 않습니다.\n",getId);
-				}
-				
 
+					}
+				}
+				if (fdarticle.id != getId) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", getId);
+				}
+
+			} else if (command.startsWith("article modify")) {
+				String[] commandBits = command.split(" ");
+				int getId = Integer.parseInt(commandBits[2]);
+
+				Articles fdarticle = null;
+
+				for (int i = 0; i < list.size(); i++) {
+					fdarticle = list.get(i);
+					if (fdarticle.id == getId) {
+						fdarticle.increseviewed();
+						System.out.printf(" 제목) : \n");
+						String title = sc.nextLine();
+						System.out.printf(" 내용) : \n");
+						String body = sc.nextLine();
+
+						fdarticle.title = title;
+						fdarticle.body = body;
+						
+						break;
+					}
+				}
+
+			}else if (command.startsWith("article delete")) {
+				String[] commandBits = command.split(" ");
+				int getId = Integer.parseInt(commandBits[2]);
+				
+				Articles fdarticle = null;
+				
+				for(int i =0; i < list.size(); i++) {
+					fdarticle = list.get(i);
+					if(fdarticle.id == getId) {
+						list.remove(i);
+						System.out.printf("%d번째 게시물이 삭제되었습니다\n", getId);
+						break;
+					}
+				}
 			}
 
 			else {
@@ -93,14 +130,7 @@ public class Main {
 		sc.close();
 
 		System.out.println("====	프로그램 끝		====");
-	
+
 	}
 
-	
-		
-	}
-
-
-
-
-
+}
