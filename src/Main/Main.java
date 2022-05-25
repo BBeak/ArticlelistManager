@@ -10,12 +10,14 @@ import util.Util;
 import dto.Articles;
 
 public class Main {
+	static  List<Articles>list = new ArrayList<Articles>();
+	
 	public static void main(String[] args) {
 		System.out.println("====	프로그램 시작	====");
+		
+		writeTestarticles();
 
-		int lastarticleId = 0;
-
-		List<Articles> list = new ArrayList<Articles>();
+		int lastarticleId = 3;
 
 		Scanner sc = new Scanner(System.in);
 
@@ -62,12 +64,12 @@ public class Main {
 					System.out.print("현재 등록된 게시물이 없습니다. \n");
 					continue;
 				}
-				System.out.printf("		제목		|		제목		|		조회수		|		등록시간		\n");
+				System.out.printf("	제목 |  제목  |  조회수  |  등록시간  \n");
 
 				for (int i = forListArticles.size() - 1; i >= 0; i--) {
 					Articles article = forListArticles.get(i);
 
-					System.out.printf("			%d		|		%s		|		%d		|		%s\n", article.id,
+					System.out.printf("%11d  |%10s  |%10d  |%10s  \n", article.id,
 							article.title, article.viewed, article.regDate);
 				}
 
@@ -140,6 +142,14 @@ public class Main {
 		}
 		sc.close();
 		System.out.println("==== 프로그램 종료 ====");
+	}
+
+	private static void writeTestarticles() {
+		System.out.println("테스트를 위한 데이터를 생성합니다.");
+		
+		list.add(new Articles(1, "title 1", "body 1",Util.getNowDatestr()));
+		list.add(new Articles(2, "title 2", "body 1",Util.getNowDatestr()));
+		list.add(new Articles(3, "title 3", "body 1",Util.getNowDatestr()));
 	}
 
 }
