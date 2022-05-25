@@ -13,7 +13,7 @@ public class App {
 		list = new ArrayList<Articles>();
 	}
 
-	public static void start(){
+	public void start(){
 		System.out.println("====	프로그램 시작	====");
 
 		writeTestarticles();
@@ -87,15 +87,16 @@ public class App {
 
 					if (fdarticle.id == getId) {
 						fdarticle.increseviewed();
-						System.out.printf(" 번호) : %d\n", fdarticle.id);
-						System.out.printf(" 제목) : %s\n", fdarticle.title);
-						System.out.printf(" 내용) : %s\n", fdarticle.body);
-						System.out.printf(" 등록시간) : %s\n", fdarticle.regDate);
-						System.out.printf(" 조회수) : %s\n", fdarticle.viewed);
+						
 						break;
 
 					}
 				}
+				System.out.printf(" 번호) : %d\n", fdarticle.id);
+				System.out.printf(" 제목) : %s\n", fdarticle.title);
+				System.out.printf(" 내용) : %s\n", fdarticle.body);
+				System.out.printf(" 등록시간) : %s\n", fdarticle.regDate);
+				System.out.printf(" 조회수) : %s\n", fdarticle.viewed);
 				if (fdarticle.id != getId) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", getId);
 				}
@@ -104,7 +105,7 @@ public class App {
 				String[] commandBits = command.split(" ");
 				int getId = Integer.parseInt(commandBits[2]);
 
-				Articles fdarticle = null;
+				Articles fdarticle = getArticleById(getId);
 
 				for (int i = 0; i < list.size(); i++) {
 					fdarticle = list.get(i);
@@ -144,7 +145,24 @@ public class App {
 		sc.close();
 		System.out.println("==== 프로그램 종료 ====");
 	}
+	private static void getid(int id) {
+		
+	}
+	private Articles getArticleById(int id) {
+		Articles fdarticle = null;
+		for (int i = 0; i < list.size(); i++) {
+			fdarticle = list.get(i);
 
+			if (fdarticle.id == id) {
+				fdarticle.increseviewed();
+				fdarticle = list.get(i);
+				break;
+
+			}
+		}
+		
+		return null;
+	}
 	private static void writeTestarticles() {
 		System.out.println("테스트를 위한 데이터를 생성합니다.");
 
