@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Scanner;
 
 import dto.Articles;
+import dto.Member;
 import util.Util;
 
 public class App {
 	private static List<Articles> list;
+	public static List<Member> members;
 	static {
 		list = new ArrayList<Articles>();
+		members = new ArrayList<>();
 	}
 
 	public void start(){
@@ -19,6 +22,7 @@ public class App {
 		writeTestarticles();
 
 		int lastarticleId = list.size();
+		int lastmemberId = members.size();
 
 		Scanner sc = new Scanner(System.in);
 
@@ -79,19 +83,9 @@ public class App {
 			else if (command.startsWith("article detail ")) {
 				String[] commandBits = command.split(" ");
 				int getId = Integer.parseInt(commandBits[2]);
-
-				Articles fdarticle = null;
-
-				for (int i = 0; i < list.size(); i++) {
-					fdarticle = list.get(i);
-
-					if (fdarticle.id == getId) {
-						fdarticle.increseviewed();
-						
-						break;
-
-					}
-				}
+				
+				Articles fdarticle = getArticleById(getId);
+				fdarticle.increseviewed();
 				System.out.printf(" 번호) : %d\n", fdarticle.id);
 				System.out.printf(" 제목) : %s\n", fdarticle.title);
 				System.out.printf(" 내용) : %s\n", fdarticle.body);
@@ -106,9 +100,7 @@ public class App {
 				int getId = Integer.parseInt(commandBits[2]);
 
 				Articles fdarticle = getArticleById(getId);
-
-				for (int i = 0; i < list.size(); i++) {
-					fdarticle = list.get(i);
+				
 					if (fdarticle.id == getId) {
 						fdarticle.increseviewed();
 						System.out.printf(" 제목) : \n");
@@ -119,25 +111,44 @@ public class App {
 						fdarticle.title = title;
 						fdarticle.body = body;
 
-						break;
 					}
-				}
+				
 
 			} else if (command.startsWith("article delete ")) {
 				String[] commandBits = command.split(" ");
 				int getId = Integer.parseInt(commandBits[2]);
-
-				Articles fdarticle = null;
-
-				for (int i = 0; i < list.size(); i++) {
-					fdarticle = list.get(i);
-					if (fdarticle.id == getId) {
-						list.remove(i);
-						System.out.printf("%d번째 게시물이 삭제되었습니다\n", getId);
-						break;
+				int foundIndex = getid(getId);
+				if (foundIndex == -1) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다.\n",getId);
+				}
+				System.out.printf("%d번 게시물을 삭제하였습니다.\n", getId);
+				list.remove(foundIndex);
+				
+				}else if (command.equals("signup")) {
+					
+					while(true) {
+						System.out.print("Id를 입력해주세요 )");
+						String signInId = sc.nextLine();
+						checkAbleID(signInId);
+						System.out.print("이름을 입력해주세요 )");
+						String name = sc.nextLine();
+						System.out.print("Pw를 입력해주세요 )");
+						String signInPw = sc.nextLine();
+						String regdate = Util.getNowDatestr();
+						System.out.print("Pw를 다시 입력해주세요 )");
+						String confirmPw = sc.nextLine();
+						if(signInPw == confirmPw) {
+							System.out.printf("%s님 회원 가입을 축하드립니다. regdate : %s", signInId, regdate );
+							Member member = new Member(lastmemberId, signInId, signInPw, regdate, name);
+							members.add(member);
+							break;
+						}else {
+							System.out.print("Pw가 일치하지 않습니다\n");
+							continue;
+						}
 					}
 				}
-			} else {
+			 else {
 				System.out.printf("%s(은)는 올바른 명령어가 아닙니다.\n", command);
 			}
 
@@ -145,21 +156,48 @@ public class App {
 		sc.close();
 		System.out.println("==== 프로그램 종료 ====");
 	}
-	private static void getid(int id) {
+	private void checkAbleID(String signInId) {
+		for (Member member : members) {
+			while(true) {
+			if (member.signupId == signInId ) {
+				System.out.printf("%s는 사용이 가능한 ID입니다.\n", signInId);
+				break;
+			}else {
+				System.out.printf("%s는 이미 사용중인 ID입니다.");
+				continue;
+			}
+		}
+		}
 		
+		
+	}
+	private static int getid(int id) {
+		int i = 0; 
+		for (Articles article : list) {
+			if (article.id == id) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
 	}
 	private Articles getArticleById(int id) {
 		Articles fdarticle = null;
-		for (int i = 0; i < list.size(); i++) {
-			fdarticle = list.get(i);
-
-			if (fdarticle.id == id) {
-				fdarticle.increseviewed();
-				fdarticle = list.get(i);
-				break;
-
-			}
+		
+		int index = getid(id);
+		if (index != -1) {
+			fdarticle = list.get(index);
+			return fdarticle;
 		}
+//		for (int i = 0; i < list.size(); i++) {
+//			fdarticle = list.get(i);
+//
+//			if (fdarticle.id == id) {
+//				fdarticle.increseviewed();
+//				fdarticle = list.get(i);
+//				return fdarticle;
+//			}
+//		}
 		
 		return null;
 	}
