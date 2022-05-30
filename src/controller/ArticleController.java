@@ -7,13 +7,37 @@ import java.util.Scanner;
 import dto.Articles;
 import util.Util;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 	private static List<Articles>list;
 	private Scanner sc;
-	
+	private String command;
+	private String actionMethodName;
 	public ArticleController(Scanner sc, List<Articles> list) {
 		this.list = list;
 		this.sc = sc;
+		
+	}
+	public void doAction(String command, String actionMethodName) {
+		this.command = command;
+		this.actionMethodName = actionMethodName;
+		switch(actionMethodName) {
+		case "list":
+			showlist();
+			break;
+		case "write":
+			dowrite();
+			break;
+		case "delete":
+			doDelete();
+			break;
+		case "modify":
+			domodify();
+			break;
+		case "detail":
+			showdetail();
+			break;
+		
+		}
 		
 	}
 
@@ -31,7 +55,7 @@ public class ArticleController {
 		
 	}
 
-	public void showlist(String command) {
+	public void showlist() {
 		String searchKeyword = command.substring("article list".length()).trim();
 		List<Articles> forListArticles = list;
 
@@ -59,7 +83,7 @@ public class ArticleController {
 		
 	}
 
-	public void showdetail(String command) {
+	public void showdetail() {
 		String[] commandBits = command.split(" ");
 		int getId = Integer.parseInt(commandBits[2]);
 		
@@ -76,7 +100,7 @@ public class ArticleController {
 		
 	}
 
-	public void domodify(String command) {
+	public void domodify() {
 		String[] commandBits = command.split(" ");
 		int getId = Integer.parseInt(commandBits[2]);
 
@@ -84,9 +108,9 @@ public class ArticleController {
 		
 			if (fdarticle.id == getId) {
 				fdarticle.increseviewed();
-				System.out.printf(" 제목) : \n");
+				System.out.printf(" 제목) : ");
 				String title = sc.nextLine();
-				System.out.printf(" 내용) : \n");
+				System.out.printf(" 내용) : ");
 				String body = sc.nextLine();
 
 				fdarticle.title = title;
@@ -116,7 +140,7 @@ public class ArticleController {
 		return null;
 	}
 
-	public void doDelete(String command) {
+	public void doDelete() {
 		String[] commandBits = command.split(" ");
 		int getId = Integer.parseInt(commandBits[2]);
 		int foundIndex = getid(getId);
@@ -128,5 +152,15 @@ public class ArticleController {
 		
 		
 	}
+	public void writeTestarticles() {
+		System.out.println("테스트를 위한 데이터를 생성합니다.");
+
+		list.add(new Articles(1, "title 1", "body 1", Util.getNowDatestr(), 11));
+		list.add(new Articles(2, "title 2", "body 1", Util.getNowDatestr(), 22));
+		list.add(new Articles(3, "title 3", "body 1", Util.getNowDatestr(), 33));
+	}
+
+	
+	
 
 }

@@ -9,13 +9,24 @@ import util.Util;
 public class MemberController extends Controller {
 	private List<Member>members;
 	private Scanner sc;
-	private int lastmemberId;
-		
+	private String command;
+	private String actionMethodName;
 	
 
 	public MemberController(Scanner sc, List<Member> members) {
 		this.sc = sc;
 		this.members = members;
+	}
+	public void doAction(String command, String actionMethodName) {
+		this.command = command;
+		this.actionMethodName = actionMethodName;
+		
+		switch(actionMethodName) {
+		case "signup":
+			doSignup();
+			break;
+		}
+		
 	}
 	public void doSignup() {
 		while(true) {
@@ -57,4 +68,6 @@ public class MemberController extends Controller {
 		
 		
 	}
+	
+	
 }
